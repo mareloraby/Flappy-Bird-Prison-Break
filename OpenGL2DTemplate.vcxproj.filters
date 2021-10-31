@@ -18,7 +18,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OpenGL2DTemplate.cpp">
+    <ClCompile Include="Flappy-Bird.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
