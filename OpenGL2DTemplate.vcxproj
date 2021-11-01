@@ -82,11 +82,9 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Flappy-Bird.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Source1.cpp" />
-    <ClCompile Include="Source2.cpp" />
-    <ClCompile Include="Source3.cpp" />
+    <ClCompile Include="Flappy-Bat.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,19 +18,13 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Flappy-Bird.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source3.cpp">
+    <ClCompile Include="Flappy-Bat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

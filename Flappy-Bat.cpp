@@ -31,7 +31,9 @@ int lives = 3;
 int startgame = 0;
 int gamerun = 0;
 int gameover = 0;
-int sset = rand() % 2 + 1;
+int gamewin = 0;
+
+int sset = rand() % 3 + 1;
 
 int xs1b1 = 0;
 int xs1b2 = 0;
@@ -82,6 +84,12 @@ int finishline = 0;
 
 
 void drawBitmapText(string text, float x, float y, float z);
+void drawbird();
+void drawrectangle(int x, int y, int w, int h);
+void drawBars(int sset);
+void Display();
+
+
 
 
 //Methods
@@ -203,7 +211,7 @@ void set3(int startpos) {
 
 void Finish_Line(int startpos) {
 
-	glColor3f(1, 0, 0);
+	glColor3f(0, 0, 0);
 	drawrectangle(startpos, 0, 3, screenheight);
 	finishline = startpos;
 
@@ -223,8 +231,6 @@ void drawBars(int sset) {
 		set3(start + 910 + 150 + 150 );
 
 		Finish_Line(start + 1365 + 150 + 100);
-
-
 		break;
 
 	case 2:
@@ -232,7 +238,7 @@ void drawBars(int sset) {
 		set3(start + 455 + 150);
 		set1(start + 910 + 150 );
 
-		Finish_Line(start + 1365 + 150 +100);
+		Finish_Line(start + 1365 + 150 + 100);
 		break;
 	case 3:
 		set3(start);
@@ -278,11 +284,20 @@ void collisionActions() {
 
 	}
 
+
 	int ballposy = falld + 225;
 	int ballposx = screenwidth / 9;
 
-	if (gamerun) {
+	if (ballposx >= finishline) {
+	
+	
+		gamerun = 0;
+		gamewin = 1;
 
+	}
+
+
+	if (gamerun) {
 		if (((ballposx >= xs1b1 - xdash && ballposx <= xs1b1 + 60 - xdash) && (ballposy <= ys1b1h || ballposy >= ys1b1y))) {
 			falld = (ys1b1h + ys1b1y) / 2 - 225;
 			cout << "CRASH1" << endl;
@@ -361,8 +376,6 @@ void collisionActions() {
 
 		}*/
 
-
-
 	}
 
 
@@ -407,6 +420,8 @@ void Display() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	//glClearColor(0,0.4,0.9,0.0f);
 	//drawbuilding();
+
+
 
 	glPushMatrix();
 	if (!startgame) {
