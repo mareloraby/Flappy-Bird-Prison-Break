@@ -8,9 +8,19 @@
 #include <iostream>
 
 
-
 using namespace std;
 
+// A good hackaround found here for to_string problems with GCC
+// http://stackoverflow.com/questions/12975341/to-string-is-not-a-member-of-std-says-so-g
+namespace patch
+{
+	template < typename T > std::string to_string(const T& n)
+	{
+		std::ostringstream stm;
+		stm << n;
+		return stm.str();
+	}
+}
 
 //Variables
 int screenwidth = 650;
@@ -27,6 +37,7 @@ int jump = 0;
 
 int start = screenwidth - screenwidth / 3;
 int lives = 3;
+int score = 0;
 
 int startgame = 0;
 int gamerun = 0;
@@ -119,8 +130,7 @@ void drawbird() {
 	if (gameover) {
 		ftime = 0;
 		falld = 0;
-		string timeString = "Game Over";
-		drawBitmapText(timeString, screenwidth/2 - 50 , screenheight/2 - 7, 0);
+		gamerun = 0;
 		
 	}
 
@@ -215,7 +225,6 @@ void Finish_Line(int startpos) {
 	drawrectangle(startpos, 0, 3, screenheight);
 	finishline = startpos;
 
-
 }
 
 
@@ -269,6 +278,10 @@ void drawBars(int sset) {
 
 void collisionActions() {
 
+//	cout << finishline << endl;
+
+
+
 	if (falld < -220) {
 		falld = -220;
 	}
@@ -288,11 +301,14 @@ void collisionActions() {
 	int ballposy = falld + 225;
 	int ballposx = screenwidth / 9;
 
-	if (ballposx >= finishline) {
+	if (ballposx >= finishline - xdash) {
 	
 	
 		gamerun = 0;
 		gamewin = 1;
+		gameover = 1;
+		cout << "finished!!" << endl;
+
 
 	}
 
@@ -412,30 +428,53 @@ void Timer(int value) {
 
 void drawTimer() {
 	string timeString = "Time : " + to_string(int(timeElapsed)) + " s";
-	drawBitmapText(timeString, 10, 0, 0);
+	drawBitmapText(timeString, screenwidth - 95 , 10 , 0);
 }
 
+void drawLives() {
+	string livestring = "Lives : " + to_string(int(lives));
+	drawBitmapText(livestring, 10, 10, 0);
+}
 
 void Display() {
 	glClear(GL_COLOR_BUFFER_BIT);
-	//glClearColor(0,0.4,0.9,0.0f);
-	//drawbuilding();
 
+	if (!gameover) {
 
+		
 
-	glPushMatrix();
-	if (!startgame) {
-		drawBitmapText("Press SPACEBAR to start", screenwidth / 2 - 70, screenheight / 2, 0);
+		drawbird();
+		drawBars(sset);
+		drawTimer();
+		drawLives();
+		glPushMatrix();
+		if (!startgame) {
+			drawBitmapText("Press SPACEBAR to start", screenwidth / 2 - 70, screenheight / 2, 0);
+		}
+		else {
+			gamerun = 1;
+		}
+		glPopMatrix();
+
+		collisionActions();
 	}
 	else {
-		gamerun = 1;
-	}
-	glPopMatrix();
-	
-	drawbird();
-	drawBars(sset);
 
-	collisionActions();
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+		if (gamewin) {
+			drawBitmapText("You Won!", 400, 300, 0);
+			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds !", 305, 270, 0);
+//			drawBitmapText("Press R to restart", 385, 230, 0);
+		}
+		else {
+
+			string timeString = "Game Over";
+			drawBitmapText(timeString, screenwidth / 2 - 50, screenheight / 2 - 7, 0);
+			drawBitmapText("Your score is" + patch::to_string(int(timeElapsed)), screenwidth / 2 - 60, screenheight / 2 - 37, 0);
+		}
+
+	}
 
 
 	glFlush();
