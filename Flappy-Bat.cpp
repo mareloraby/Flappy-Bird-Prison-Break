@@ -31,9 +31,11 @@ int barwidth = 60;
 
 double ftime = 0.08;
 double xdash = 0.0;
+double step = 0.05;
 double falld = 0;
 double slided = 0;
 int jump = 0;
+
 
 int start = screenwidth - screenwidth / 3;
 int lives = 3;
@@ -44,7 +46,7 @@ int gamerun = 0;
 int gameover = 0;
 int gamewin = 0;
 
-int sset = rand() % 3 + 1;
+int sset = rand() % 2 + 1;
 
 int xs1b1 = 0;
 int xs1b2 = 0;
@@ -313,28 +315,78 @@ void collisionActions() {
 	}
 
 
+	
+
 	if (gamerun) {
+
+		
+
+
 		if (((ballposx >= xs1b1 - xdash && ballposx <= xs1b1 + 60 - xdash) && (ballposy <= ys1b1h || ballposy >= ys1b1y))) {
 			falld = (ys1b1h + ys1b1y) / 2 - 225;
 			cout << "CRASH1" << endl;
 			lives--;
+			score--;
 		}
+		else if (ballposx > (xs1b1 + 60 - xdash) && ballposx < (xs1b1 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs1b1 + 60 - xdash << endl;
+
+
+
+		
+		}
+
 		if (((ballposx >= xs1b2 - xdash && ballposx <= xs1b2 + 60 - xdash) && (ballposy <= ys1b2h || ballposy >= ys1b2y))) {
+
 			falld = (ys1b2h + ys1b2y) / 2 - 225;
 			cout << "CRASH1" << endl;
 			lives--;
+			score--;
+
 
 		}
+		else if (ballposx > (xs1b2 + 60 - xdash) && ballposx < (xs1b2 + 60 - xdash) + step) {
+
+			score++;
+			cout << score << endl;
+			cout << xs1b2 + 60 - xdash << endl;
+
+		
+		}
+
 		if (((ballposx >= xs1b3 - xdash && ballposx <= xs1b3 + 60 - xdash) && (ballposy <= ys1b3h || ballposy >= ys1b3y))) {
+
+
 			falld = (ys1b3h + ys1b3y) / 2 - 225;
 			cout << "CRASH1" << endl;
 			lives--;
+			score--;
+
 
 		}
+		else if (ballposx > (xs1b3 + 60 - xdash) && ballposx < (xs1b3 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs1b3 + 60 - xdash << endl;
+
+		}
+		
 		if (((ballposx >= xs1b4 - xdash && ballposx <= xs1b4 + 60 - xdash) && (ballposy <= ys1b4h || ballposy >= ys1b4y))) {
+
+
 			falld = (ys1b4h + ys1b4y) / 2 - 225;
 			cout << "CRASH1" << endl;
 			lives--;
+			score--;
+
+
+		}
+		else if (ballposx > (xs1b4 + 60 - xdash) && ballposx < (xs1b4 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs1b4 + 60 - xdash << endl;
 
 		}
 
@@ -345,25 +397,61 @@ void collisionActions() {
 			falld = (ys2b1h + ys2b1y) / 2 - 225;
 			cout << "CRASH2" << endl;
 			lives--;
+			score--;
+
 		}
+		else if (ballposx > (xs2b1 + 60 - xdash) && ballposx < (xs2b1 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs2b1 + 60 - xdash << endl;
+
+		}
+
 		if (((ballposx >= xs2b2 - xdash && ballposx <= xs2b2 + 60 - xdash) && (ballposy <= ys2b2h || ballposy >= ys2b2y))) {
 			falld = (ys2b2h + ys2b2y) / 2 - 225;
 			cout << "CRASH2" << endl;
 			lives--;
+			score--;
+
 
 		}
+		else if (ballposx > (xs2b2 + 60 - xdash) && ballposx < (xs2b2 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs2b2 + 60 - xdash << endl;
+
+		}
+
 		if (((ballposx >= xs2b3 - xdash && ballposx <= xs2b3 + 60 - xdash) && (ballposy <= ys2b3h || ballposy >= ys2b3y))) {
 			falld = (ys2b3h + ys2b3y) / 2 - 225;
 			cout << "CRASH2" << endl;
 			lives--;
+			score--;
+
 
 		}
+		else if (ballposx > (xs2b3 + 60 - xdash) && ballposx < (xs2b3 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs2b3 + 60 - xdash << endl;
+
+		}
+
 		if (((ballposx >= xs2b4 - xdash && ballposx <= xs2b4 + 60 - xdash) && (ballposy <= ys2b4h || ballposy >= ys2b4y))) {
 			falld = (ys2b4h + ys2b4y) / 2 - 225;
 			cout << "CRASH2" << endl;
 			lives--;
+			score--;
+
 
 		}
+		else if (ballposx > (xs2b4 + 60 - xdash) && ballposx < (xs2b4 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs2b4 + 60 - xdash << endl;
+
+		}
+
 
 
 
@@ -371,17 +459,43 @@ void collisionActions() {
 			falld = (ys3b1h + ys3b1y) / 2 - 225;
 			cout << "CRASH3" << endl;
 			lives--;
+			score--;
+
 		}
+		else if (ballposx > (xs3b1 + 60 - xdash) && ballposx < (xs3b1 + 60 - xdash)+step) {
+			score++;
+			cout << score << endl;
+			cout << xs3b1 + 60 - xdash << endl;
+
+		}
+
 		if (((ballposx >= xs3b2 - xdash && ballposx <= xs3b2 + 60 - xdash) && (ballposy <= ys3b2h || ballposy >= ys3b2y))) {
 			falld = (ys3b2h + ys3b2y) / 2 - 225;
 			cout << "CRASH3" << endl;
 			lives--;
+			score--;
+
 
 		}
+		else if (ballposx > (xs3b2 + 60 - xdash) && ballposx < (xs3b2 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs3b2 + 60 - xdash << endl;
+
+		}
+
 		if (((ballposx >= xs3b3 - xdash && ballposx <= xs3b3 + 60 - xdash) && (ballposy <= ys3b3h || ballposy >= ys3b3y))) {
 			falld = (ys3b3h + ys3b3y) / 2 - 225;
 			cout << "CRASH3" << endl;
 			lives--;
+			score--;
+
+
+		}
+		else if (ballposx > (xs3b3 + 60 - xdash) && ballposx < (xs3b3 + 60 - xdash) + step) {
+			score++;
+			cout << score << endl;
+			cout << xs3b3 + 60 - xdash << endl;
 
 		}
 
@@ -427,13 +541,32 @@ void Timer(int value) {
 }
 
 void drawTimer() {
-	string timeString = "Time : " + to_string(int(timeElapsed)) + " s";
-	drawBitmapText(timeString, screenwidth - 95 , 10 , 0);
+	string timeString = "";
+	if (gamerun) {
+		 timeString = "Time : " + to_string(int(timeElapsed)) + " s";
+	}
+	else {
+		 timeString = "Time : 0 s";
+	}
+		drawBitmapText(timeString, screenwidth - 95, 10, 0);
+	
 }
 
 void drawLives() {
 	string livestring = "Lives : " + to_string(int(lives));
 	drawBitmapText(livestring, 10, 10, 0);
+}
+
+void drawScore() {
+
+	string timeString = "";
+	if (gamerun) {
+		timeString = to_string(int(score));
+	}
+	else {
+		timeString = "0";
+	}
+	drawBitmapText(timeString, screenwidth/2 - 7, screenheight - 30, 0);
 }
 
 void Display() {
@@ -445,6 +578,7 @@ void Display() {
 
 		drawbird();
 		drawBars(sset);
+		drawScore();
 		drawTimer();
 		drawLives();
 		glPushMatrix();
@@ -464,14 +598,16 @@ void Display() {
 
 		if (gamewin) {
 			drawBitmapText("You Won!", 400, 300, 0);
-			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds !", 305, 270, 0);
+			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds", 305, 270, 0);
+			drawBitmapText("with a score of "+ patch::to_string(int(score)),375 , 240, 0);
+
 //			drawBitmapText("Press R to restart", 385, 230, 0);
 		}
 		else {
 
-			string timeString = "Game Over";
+			string timeString = "Game Over :(";
 			drawBitmapText(timeString, screenwidth / 2 - 50, screenheight / 2 - 7, 0);
-			drawBitmapText("Your score is" + patch::to_string(int(timeElapsed)), screenwidth / 2 - 60, screenheight / 2 - 37, 0);
+			drawBitmapText("Your score is " + patch::to_string(int(score)), screenwidth / 2 - 60, screenheight / 2 - 37, 0);
 		}
 
 	}
@@ -482,7 +618,7 @@ void Display() {
 
 void Anim()
 {
-	if (gamerun) xdash += 0.03;
+	if (gamerun) xdash += step;
 	if (gameover) xdash += 0.2;
 	glutPostRedisplay();
 }
