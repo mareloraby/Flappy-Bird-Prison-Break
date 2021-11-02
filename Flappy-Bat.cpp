@@ -47,9 +47,8 @@ int lives = 3;
 int score = 0;
 float powerupx = 0;
 float powerupy = 0;
-int powerupused = 0;
 int powerupon = 0;
-int prevhadpower = 0;
+int powerset = 0;
 
 int startgame = 0;
 int gamerun = 0;
@@ -117,11 +116,6 @@ void drawPowerUp(int x,int y,int r);
 void Display();
 
 
-
-
-//Methods
-
-
 void drawcircle(int x, int y, int r) {
 
 	
@@ -160,12 +154,14 @@ void drawPowerUp(int x, int y, int r) {
 
 	glPushMatrix();
 
-		glColor3f(0.5, 0, 0.5);
-//		glTranslated(-xdash, 0, 0);
-//		glRotatef(rot, 1, 1, 0);
-		drawcircle(x,y,r);
 
-	
+	if (!powerupon) {
+		glColor3f(0.5, 0, 0.5);
+		//		glTranslated(-xdash, 0, 0);
+		//		glRotatef(rot, 1, 1, 0);
+		drawcircle(x, y, r);
+
+	}
 	glPopMatrix();
 }
 
@@ -185,7 +181,7 @@ void drawrectangle(int x, int y, int w, int h) {
 
 void set1(int startpos) {
 	//glPushMatrix();
-	if (powerupon) {
+	if (powerupon && powerset == 1) {
 		glColor3f(0.5, 0, 0.5);
 
 	}
@@ -214,7 +210,7 @@ void set1(int startpos) {
 
 }
 void set2(int startpos) {
-	if (powerupon) {
+	if (powerupon && powerset == 2) {
 
 		glColor3f(0.5, 0, 0.5);
 
@@ -246,7 +242,7 @@ void set2(int startpos) {
 }
 void set3(int startpos) {
 
-	if (powerupon) {
+	if (powerupon && powerset == 3) {
 
 		glColor3f(0.5, 0, 0.5);
 
@@ -364,43 +360,50 @@ void drawBars(int sset) {
 
 
 void addPowers() {
-
-	
+	//3 1 2
+	//2 3 1
+	//1 2 3
 
 	if (sset == 3 && rand2 == 1) {
 		powerupx = xs1b1 + 30 - xdash;
 		powerupy = (ys1b1h + ys1b1y) / 2;
 		drawPowerUp(powerupx, powerupy, 10);
+		powerset = 1;
 	}
 	else if (sset == 3 && rand2 == 2) {
 
 		powerupx = xs2b1 + 30 - xdash;
 		powerupy = (ys2b1h + ys2b1y) / 2;
 		drawPowerUp(powerupx, powerupy, 10);
+		powerset = 2;
 	
 	}
 	else if (sset == 2 && rand2 == 1) {
 		powerupx = xs3b1 + 30 - xdash;
 		powerupy = (ys3b1h + ys3b1y) / 2;
 		drawPowerUp(powerupx, powerupy, 10);
+		powerset = 3;
 	}
 	else if (sset == 2 && rand2 == 2) {
 
-		powerupx = xs2b1 + 30 - xdash;
-		powerupy = (ys2b1h + ys2b1y) / 2;
+		powerupx = xs1b1 + 30 - xdash;
+		powerupy = (ys1b1h + ys1b1y) / 2;
 		drawPowerUp(powerupx, powerupy, 10);
+		powerset = 1;
 
 	}
 	else if (sset == 1 && rand2 == 1) {
 		powerupx = xs2b1 + 30 - xdash;
 		powerupy = (ys2b1h + ys2b1y) / 2;
 		drawPowerUp(powerupx, powerupy, 10);
+		powerset = 2;
 	}
 	else if (sset == 1 && rand2 == 2) {
 
 		powerupx = xs3b1 + 30 - xdash;
 		powerupy = (ys3b1h + ys3b1y) / 2;
 		drawPowerUp(powerupx, powerupy, 10);
+		powerset = 3;
 
 	}
 
@@ -459,15 +462,25 @@ void collisionActions() {
 
 
 	if (ballposx > powerupx -9 && ballposx < powerupx +9  && ballposy > powerupy - 9 && ballposy < powerupy + 9) {
-
 		powerupon = 1;
-		powerupused = 1;
-		prevhadpower = 0;
-		cout << "POWER" << endl;
-
-
 	}
 
+	if (ballposx >= xs1b1 -xdash  && ballposx < xs1b4 + 60 - xdash) {
+		if (powerset != 1) {
+			powerupon = 0;
+		}
+	}
+	if (ballposx >= xs2b1 - xdash && ballposx < xs2b4 + 60 - xdash) {
+		if (powerset != 2) {
+			powerupon = 0;
+		}
+	}
+	
+	if (ballposx >= xs3b1 - xdash && ballposx < xs3b4 +60 - xdash) {
+		if (powerset != 3) {
+			powerupon = 0;
+		}
+	}
 
 
 	if (gamerun) {
@@ -476,7 +489,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs1b1 - xdash && ballposx <= xs1b1 + 60 - xdash) && (ballposy <= ys1b1h || ballposy >= ys1b1y))) {
 			falld = (ys1b1h + ys1b1y) / 2 - 225;
-			cout << "CRASH1" << endl;
+			//cout << "CRASH1" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -484,6 +497,7 @@ void collisionActions() {
 					score = 0;
 				}
 			}
+			
 
 		}
 		else if (ballposx > (xs1b1 + 60 - xdash) && ballposx < (xs1b1 + 60 - xdash) + step) {
@@ -499,7 +513,7 @@ void collisionActions() {
 		if (((ballposx >= xs1b2 - xdash && ballposx <= xs1b2 + 60 - xdash) && (ballposy <= ys1b2h || ballposy >= ys1b2y))) {
 
 			falld = (ys1b2h + ys1b2y) / 2 - 225;
-			cout << "CRASH1" << endl;
+		//	cout << "CRASH1" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -523,7 +537,7 @@ void collisionActions() {
 
 
 			falld = (ys1b3h + ys1b3y) / 2 - 225;
-			cout << "CRASH1" << endl;
+		//	cout << "CRASH1" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -545,7 +559,7 @@ void collisionActions() {
 
 
 			falld = (ys1b4h + ys1b4y) / 2 - 225;
-			cout << "CRASH1" << endl;
+			//cout << "CRASH1" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -568,7 +582,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs2b1 - xdash && ballposx <= xs2b1 + 60 - xdash) && (ballposy <= ys2b1h || ballposy >= ys2b1y))) {
 			falld = (ys2b1h + ys2b1y) / 2 - 225;
-			cout << "CRASH2" << endl;
+			//cout << "CRASH2" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -587,7 +601,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs2b2 - xdash && ballposx <= xs2b2 + 60 - xdash) && (ballposy <= ys2b2h || ballposy >= ys2b2y))) {
 			falld = (ys2b2h + ys2b2y) / 2 - 225;
-			cout << "CRASH2" << endl;
+		//	cout << "CRASH2" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -606,7 +620,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs2b3 - xdash && ballposx <= xs2b3 + 60 - xdash) && (ballposy <= ys2b3h || ballposy >= ys2b3y))) {
 			falld = (ys2b3h + ys2b3y) / 2 - 225;
-			cout << "CRASH2" << endl;
+		//	cout << "CRASH2" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -625,7 +639,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs2b4 - xdash && ballposx <= xs2b4 + 60 - xdash) && (ballposy <= ys2b4h || ballposy >= ys2b4y))) {
 			falld = (ys2b4h + ys2b4y) / 2 - 225;
-			cout << "CRASH2" << endl;
+		//	cout << "CRASH2" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -647,7 +661,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs3b1 - xdash && ballposx <= xs3b1 + 60 - xdash) && (ballposy <= ys3b1h || ballposy >= ys3b1y))) {
 			falld = (ys3b1h + ys3b1y) / 2 - 225;
-			cout << "CRASH3" << endl;
+		//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -665,7 +679,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs3b2 - xdash && ballposx <= xs3b2 + 60 - xdash) && (ballposy <= ys3b2h || ballposy >= ys3b2y))) {
 			falld = (ys3b2h + ys3b2y) / 2 - 225;
-			cout << "CRASH3" << endl;
+		//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -684,7 +698,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs3b3 - xdash && ballposx <= xs3b3 + 60 - xdash) && (ballposy <= ys3b3h || ballposy >= ys3b3y))) {
 			falld = (ys3b3h + ys3b3y) / 2 - 225;
-			cout << "CRASH3" << endl;
+		//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -702,7 +716,7 @@ void collisionActions() {
 
 		if (((ballposx >= xs3b4 - xdash && ballposx <= xs3b4 + 60 - xdash) && (ballposy <= ys3b4h || ballposy >= ys3b4y))) {
 			falld = (ys3b4h + ys3b4y) / 2 - 225;
-			cout << "CRASH3" << endl;
+		//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				lives--;
 				score--;
@@ -788,14 +802,12 @@ void Display() {
 
 	if (!gameover) {
 
-		cout << rand2 << endl;
-
+		addPowers();
 		drawbird();
 		drawBars(sset);
 		drawScore();
 		drawTimer();
 		drawLives();
-		addPowers();
 		//drawPowerUp(100,111,10);
 		glPushMatrix();
 		if (!startgame) {
