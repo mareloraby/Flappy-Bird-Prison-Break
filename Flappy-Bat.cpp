@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <random>
-#include <glut.h>
 #include <list>
 #include <string>
 #include <sstream>
 #include <iostream>
-
+#include "TextureBuilder.h"
+#include <glut.h>
 
 using namespace std;
 
@@ -22,12 +22,11 @@ namespace patch
 	}
 }
 
-
-//	falld = (ys1b1h + ys1b1y) / 2 - 225;
-
 //Variables
-int screenwidth = 650;
+
+int screenwidth = 600; //360
 int screenheight = 450;
+
 int FPS = 30;
 float timeElapsed = 0.0;
 int barwidth = 60;
@@ -112,17 +111,17 @@ void drawcircle(int x, int y, int r);
 void drawbird();
 void drawrectangle(int x, int y, int w, int h);
 void drawBars(int sset);
-void drawPowerUp(int x,int y,int r);
+void drawPowerUp(int x,int y);
 void Display();
 
 
 void drawcircle(int x, int y, int r) {
-
-	
+	glPushMatrix();
+	glColor3f(1, 1, 1);
 	glTranslatef(x, y, 0);
 	GLUquadric* quadObj = gluNewQuadric();
 	gluDisk(quadObj, 0, r, 50, 50);
-
+	glPopMatrix();
 }
 
 
@@ -138,28 +137,117 @@ void drawbird() {
 		}
 		else falld += (-0.5 * 9.81) * (ftime * ftime); //free fall
 	}
-
 	if (gameover) {
 		ftime = 0;
 		falld = 0;
 		gamerun = 0;
 		
 	}
+	int cx = screenwidth / 9;
+	int cy = screenheight / 2;
 
-	drawcircle(screenwidth / 9, screenheight / 2, 10);
+
+	drawcircle(cx, cy, 10);
+
+
+	glBegin(GL_POLYGON);
+	glColor3f(1, 0, 0);
+	glVertex2f(cx - 7.5, cy + 7);
+	glVertex2f(cx + 7.5, cy + 7);
+	glVertex2f(cx + 11, cy + 1);
+	glVertex2f(cx - 11, cy + 1);
+	glEnd();
+
 	glPopMatrix();
 }
 
-void drawPowerUp(int x, int y, int r) {
+void drawPowerUp(int x, int y) {
 
 	glPushMatrix();
 
 
 	if (!powerupon) {
-		glColor3f(0.5, 0, 0.5);
-		//		glTranslated(-xdash, 0, 0);
-		//		glRotatef(rot, 1, 1, 0);
-		drawcircle(x, y, r);
+		
+		glBegin(GL_POLYGON);
+
+		glColor3f(0, 0.9, 1);
+		glVertex2f(x,y - 10);
+		glVertex2f(x + 10, y);
+		glVertex2f(x + 5, y + 5);
+		glVertex2f(x - 5, y + 5);
+		glVertex2f(x - 10, y);
+
+		glEnd();
+
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x - 10, y);
+		glVertex2f(x + 10, y);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x - 5, y);
+		glVertex2f(x, y - 10);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x - 4 , y );
+		glVertex2f(x, y - 10);
+		glEnd();
+
+		//glBegin(GL_LINES);
+		//glColor3f(1, 1, 1);
+		//glVertex2f(x - 3, y);
+		//glVertex2f(x, y - 10);
+		//glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x - 2, y);
+		glVertex2f(x, y - 10);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x + 2, y);
+		glVertex2f(x, y - 10);
+		glEnd();
+
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x - 4, y);
+		glVertex2f(x-2, y +5);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x + 4, y);
+		glVertex2f(x+2, y+5);
+		glEnd();
+
+
+
+		//glBegin(GL_LINES);
+		//glColor3f(1, 1, 1);
+		//glVertex2f(x + 3, y);
+		//glVertex2f(x, y - 10);
+		//glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x + 4, y);
+		glVertex2f(x, y - 10);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(1, 1, 1);
+		glVertex2f(x + 5, y);
+		glVertex2f(x, y - 10);
+		glEnd();
 
 	}
 	glPopMatrix();
@@ -167,8 +255,16 @@ void drawPowerUp(int x, int y, int r) {
 
 
 void drawrectangle(int x, int y, int w, int h) {
+	
+	glBegin(GL_LINES);
+	
+		glVertex2f(x, y+h);
+		glVertex2f(x+w, y+h);
+	
+	glEnd();
 
 	glBegin(GL_POLYGON);
+
 	glVertex3f(x, y, 0.0f);
 	glVertex3f(x + w, y, 0.0f);
 	glVertex3f(x + w, y + h, 0.0f);
@@ -182,7 +278,7 @@ void drawrectangle(int x, int y, int w, int h) {
 void set1(int startpos) {
 	//glPushMatrix();
 	if (powerupon && powerset == 1) {
-		glColor3f(0.5, 0, 0.5);
+		glColor3f(0, 0.9, 1);
 
 	}
 	else {
@@ -198,6 +294,7 @@ void set1(int startpos) {
 	drawrectangle(startpos, ys1b2y, barwidth, 195);
 	xs1b2 = startpos;
 	startpos += 150;
+
 	drawrectangle(startpos, 0, barwidth, ys1b3h);
 	drawrectangle(startpos, ys1b3y, barwidth, 195);
 	xs1b3 = startpos;
@@ -212,8 +309,7 @@ void set1(int startpos) {
 void set2(int startpos) {
 	if (powerupon && powerset == 2) {
 
-		glColor3f(0.5, 0, 0.5);
-
+		glColor3f(0, 0.9, 1);
 	}
 	else {
 		glColor3f(0, 0.7, 0.5);
@@ -244,7 +340,7 @@ void set3(int startpos) {
 
 	if (powerupon && powerset == 3) {
 
-		glColor3f(0.5, 0, 0.5);
+		glColor3f(0, 0.9, 1);
 
 	}
 	else {
@@ -367,42 +463,41 @@ void addPowers() {
 	if (sset == 3 && rand2 == 1) {
 		powerupx = xs1b1 + 30 - xdash;
 		powerupy = (ys1b1h + ys1b1y) / 2;
-		drawPowerUp(powerupx, powerupy, 10);
+		drawPowerUp(powerupx, powerupy);
 		powerset = 1;
 	}
 	else if (sset == 3 && rand2 == 2) {
 
 		powerupx = xs2b1 + 30 - xdash;
 		powerupy = (ys2b1h + ys2b1y) / 2;
-		drawPowerUp(powerupx, powerupy, 10);
+		drawPowerUp(powerupx, powerupy);
 		powerset = 2;
 	
 	}
 	else if (sset == 2 && rand2 == 1) {
 		powerupx = xs3b1 + 30 - xdash;
 		powerupy = (ys3b1h + ys3b1y) / 2;
-		drawPowerUp(powerupx, powerupy, 10);
+		drawPowerUp(powerupx, powerupy);
 		powerset = 3;
 	}
 	else if (sset == 2 && rand2 == 2) {
-
 		powerupx = xs1b1 + 30 - xdash;
 		powerupy = (ys1b1h + ys1b1y) / 2;
-		drawPowerUp(powerupx, powerupy, 10);
+		drawPowerUp(powerupx, powerupy);
 		powerset = 1;
 
 	}
 	else if (sset == 1 && rand2 == 1) {
 		powerupx = xs2b1 + 30 - xdash;
 		powerupy = (ys2b1h + ys2b1y) / 2;
-		drawPowerUp(powerupx, powerupy, 10);
+		drawPowerUp(powerupx, powerupy);
 		powerset = 2;
 	}
 	else if (sset == 1 && rand2 == 2) {
 
 		powerupx = xs3b1 + 30 - xdash;
 		powerupy = (ys3b1h + ys3b1y) / 2;
-		drawPowerUp(powerupx, powerupy, 10);
+		drawPowerUp(powerupx, powerupy);
 		powerset = 3;
 
 	}
@@ -804,11 +899,12 @@ void Display() {
 
 		addPowers();
 		drawbird();
+
+
 		drawBars(sset);
 		drawScore();
 		drawTimer();
 		drawLives();
-		//drawPowerUp(100,111,10);
 		glPushMatrix();
 		if (!startgame) {
 			drawBitmapText("Press SPACEBAR to start", screenwidth / 2 - 70, screenheight / 2, 0);
@@ -827,9 +923,9 @@ void Display() {
 
 		if (gamewin) {
 
-			drawBitmapText("You Won!", 400, 300, 0);
-			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds", 305, 270, 0);
-			drawBitmapText("with a score of "+ patch::to_string(int(score)),375 , 240, 0);
+			drawBitmapText("You Won!", screenwidth / 2 - 50, 300, 0);
+			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds", screenwidth/ 2 - 150 , 270, 0);
+			drawBitmapText("with a score of "+ patch::to_string(int(score)) +".", screenwidth / 2 - 75 , 240, 0);
 
 //			drawBitmapText("Press R to restart", 385, 230, 0);
 		}
@@ -843,8 +939,6 @@ void Display() {
 		}
 
 	}
-
-
 	glFlush();
 }
 
