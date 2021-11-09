@@ -998,7 +998,9 @@ void Display() {
 		drawLives();
 		glPushMatrix();
 		if (!startgame) {
-			drawBitmapText("Press SPACEBAR to start", screenwidth / 2 - 70, screenheight / 2, 0);
+			drawBitmapText("Help the bird breakout of prison!!", screenwidth / 2 - 135, screenheight / 2, 0);
+
+			drawBitmapText("Press SPACEBAR to start", screenwidth / 2 - 100, screenheight / 2 - 30, 0);
 		}
 		else {
 			gamerun = 1;
