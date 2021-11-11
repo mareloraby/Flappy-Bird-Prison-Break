@@ -9,7 +9,7 @@
 #include <mmsystem.h>
 #include <tchar.h>
 #include <cstdlib>   // rand and srand
-//#include "TextureBuilder.h"
+#include "TextureBuilder.h"
 #include <glut.h>
 
 using namespace std;
@@ -27,8 +27,8 @@ namespace patch
 
 //Variables
 //
-//GLuint texID;
-//int rep = 2;
+GLuint texID;
+int rep = 2;
 
 int screenwidth = 600; //360
 int screenheight = 450;
@@ -121,7 +121,7 @@ void drawcircle(int x, int y, int r);
 void drawbird();
 void drawrectangle(int x, int y, int w, int h);
 void drawBars(int sset);
-void drawPowerUp(int x,int y);
+void drawPowerUp(int x, int y);
 void Display();
 
 
@@ -140,7 +140,7 @@ void drawbird() {
 	glPushMatrix();
 	glTranslatef(slided, falld, 0);
 	glColor3f(1, 1, 1);
-	
+
 	if (gamerun) {
 		if (jump) {
 			falld += 17; jump = 0;
@@ -151,7 +151,7 @@ void drawbird() {
 		ftime = 0;
 		falld = 0;
 		gamerun = 0;
-		
+
 	}
 	int cx = screenwidth / 9;
 	int cy = screenheight / 2;
@@ -167,17 +167,17 @@ void drawbird() {
 	glVertex2f(cx + 11, cy + 0);
 	glVertex2f(cx - 11, cy + 0);
 	glEnd();
-	
-	drawcircle(cx+5, cy+4, 2.5);
+
+	drawcircle(cx + 5, cy + 4, 2.5);
 
 	glColor3f(0.3, 0.3, 0.3);
-	drawrectangle(cx - 15, cy + 1, 5, 3); 
+	drawrectangle(cx - 15, cy + 1, 5, 3);
 
 	glBegin(GL_POLYGON);
 	glColor3f(1, 0.5, 0);
 	glVertex2f(cx + 10, cy + 3);
 	glVertex2f(cx + 15, cy);
-	glVertex2f(cx + 10, cy-3);
+	glVertex2f(cx + 10, cy - 3);
 	glEnd();
 
 
@@ -191,11 +191,11 @@ void drawPowerUp(int x, int y) {
 
 
 	if (!powerupon) {
-		
+
 		glBegin(GL_POLYGON);
 
 		glColor3f(0, 0.9, 1);
-		glVertex2f(x,y - 10);
+		glVertex2f(x, y - 10);
 		glVertex2f(x + 10, y);
 		glVertex2f(x + 5, y + 5);
 		glVertex2f(x - 5, y + 5);
@@ -217,11 +217,11 @@ void drawPowerUp(int x, int y) {
 
 		glBegin(GL_LINES);
 		glColor3f(1, 1, 1);
-		glVertex2f(x - 4 , y );
+		glVertex2f(x - 4, y);
 		glVertex2f(x, y - 10);
 		glEnd();
 
-	
+
 
 		glBegin(GL_LINES);
 		glColor3f(1, 1, 1);
@@ -239,13 +239,13 @@ void drawPowerUp(int x, int y) {
 		glBegin(GL_LINES);
 		glColor3f(1, 1, 1);
 		glVertex2f(x - 4, y);
-		glVertex2f(x-2, y +5);
+		glVertex2f(x - 2, y + 5);
 		glEnd();
 
 		glBegin(GL_LINES);
 		glColor3f(1, 1, 1);
 		glVertex2f(x + 4, y);
-		glVertex2f(x+2, y+5);
+		glVertex2f(x + 2, y + 5);
 		glEnd();
 
 		glBegin(GL_LINES);
@@ -267,8 +267,8 @@ void drawPowerUp(int x, int y) {
 
 
 void drawrectangle(int x, int y, int w, int h) {
-	
-	
+
+
 
 	glBegin(GL_POLYGON);
 	glVertex3f(x, y, 0.0f);
@@ -280,43 +280,44 @@ void drawrectangle(int x, int y, int w, int h) {
 
 
 
-
-	//glBegin(GL_LINES);
+	glPushMatrix();
 	//glColor3f(1, 1, 1);
-	//glVertex2f(x, y + h);
-	//glVertex2f(x + w, y + h);
-	//glEnd();
-
+	glBegin(GL_LINES);
+	glVertex2f(x, y + h);
+	glVertex2f(x + w, y + h);
+	glEnd();
+	glPopMatrix();
 
 
 }
-//
-//void drawbackground() {
-//
-//	//glClear(GL_COLOR_BUFFER_BIT);
-//	
-//	glPushMatrix();
-//	glBindTexture(GL_TEXTURE_2D, texID);
-//	//important
-//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); //(s,R)
-//
-//	glBegin(GL_QUADS);
-//	glTexCoord2f(0.0f, 0.0f); //take color from loaded texture
-//	glVertex3f(0, 0, 0);
-//
-//	glTexCoord2f(rep, 0.0f); //rep: repeat  - hy-map 0,0 1,0
-//	glVertex3f(0, screenheight, 0);
-//
-//	glTexCoord2f(rep, rep);
-//	glVertex3f(screenwidth, screenheight, 0);
-//
-//	glTexCoord2f(0.0f, rep);
-//	glVertex3f(screenwidth, 0, 0);
-//
-//	glEnd();
-//
-//	glPopMatrix();
-//}
+
+void drawbackground() {
+
+	glEnable(GL_TEXTURE_2D);
+	
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, texID);
+	//important
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); //(s,R)
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); //take color from loaded texture
+	glVertex3f(0, 0, 0);
+
+	glTexCoord2f(0, rep); 
+	glVertex3f(0, screenheight, 0);
+
+	glTexCoord2f(rep, rep);
+	glVertex3f(screenwidth, screenheight, 0);
+
+	glTexCoord2f(rep, 0);
+	glVertex3f(screenwidth, 0, 0);
+
+	glEnd();
+
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+}
 
 
 void set1(int startpos) {
@@ -324,19 +325,16 @@ void set1(int startpos) {
 	if (powerupon && powerset == 1) {
 		glColor3f(0, 0.9, 1);
 
-
 	}
 	else {
 		glColor3f(0.7, 0.7, 0.7);
 	}
-	
-
-
 
 	drawrectangle(startpos, 0, barwidth, ys1b1h);
 	drawrectangle(startpos, ys1b1y, barwidth, 195);
 	xs1b1 = startpos;
 	startpos += 150;
+
 	drawrectangle(startpos, 0, barwidth, ys1b2h);
 	drawrectangle(startpos, ys1b2y, barwidth, 195);
 	xs1b2 = startpos;
@@ -346,6 +344,7 @@ void set1(int startpos) {
 	drawrectangle(startpos, ys1b3y, barwidth, 195);
 	xs1b3 = startpos;
 	startpos += 150;
+
 	drawrectangle(startpos, 0, barwidth, ys1b4h);
 	drawrectangle(startpos, ys1b4y, barwidth, 195);
 	xs1b4 = startpos;
@@ -363,8 +362,7 @@ void set2(int startpos) {
 	}
 
 	//glPushMatrix();
-	
-	//glColor3f(1, 0, 0.5);
+
 	drawrectangle(startpos, 0, barwidth, ys2b1h);
 	drawrectangle(startpos, ys2b1y, barwidth, 195);
 	xs2b1 = startpos;
@@ -447,14 +445,10 @@ void drawBars(int sset) {
 
 		}
 
-		
-
 		Finish_Line(start + 1365 + 190 + 190 + 100);
 		break;
 
 	case 2:
-
-
 
 		if (rand2 == 2) {
 
@@ -503,7 +497,7 @@ void drawBars(int sset) {
 
 
 void addPowers() {
-	
+
 	if (sset == 3 && rand2 == 1) {
 		powerupx = xs1b1 + 30 - xdash;
 		powerupy = (ys1b1h + ys1b1y) / 2;
@@ -516,7 +510,7 @@ void addPowers() {
 		powerupy = (ys2b1h + ys2b1y) / 2;
 		drawPowerUp(powerupx, powerupy);
 		powerset = 2;
-	
+
 	}
 	else if (sset == 2 && rand2 == 1) {
 		powerupx = xs3b1 + 30 - xdash;
@@ -546,7 +540,7 @@ void addPowers() {
 
 	}
 
-	
+
 
 }
 
@@ -555,7 +549,7 @@ void collisionActions() {
 
 
 
-	if (falld < - screenheight / 2  - 13) {
+	if (falld < -screenheight / 2 - 13) {
 		gameover = 1;
 		gamewin = 0;
 		gamerun = 0;
@@ -569,7 +563,7 @@ void collisionActions() {
 	}
 
 	if (lives <= 0) {
-	
+
 		gameover = 1;
 		gamerun = 0;
 		gamewin = 0;
@@ -581,7 +575,7 @@ void collisionActions() {
 	int ballposx = screenwidth / 9;
 
 	if (ballposx >= finishline - xdash) {
-	
+
 		gamerun = 0;
 		gamewin = 1;
 		gameover = 1;
@@ -590,30 +584,32 @@ void collisionActions() {
 
 
 
-	if (ballposx > powerupx - 10 && ballposx < powerupx + 10  && ballposy > powerupy - 9 && ballposy < powerupy + 9) {
+	if (ballposx > powerupx - 10 && ballposx < powerupx + 10 && ballposy > powerupy - 9 && ballposy < powerupy + 9) {
 
 
 		powerupon = 1;
+		score = score + 10;
 		if (!playedsound) {
+		
 			PlaySound(TEXT("audio/power3.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 			playedsound = 1;
 		}
-		
-	
+
+
 	}
 
-	if (ballposx >= xs1b1 -xdash  && ballposx < xs1b4 + 60 - xdash) {
+	if (ballposx >= xs1b1 - xdash && ballposx < xs1b4 + barwidth - xdash) {
 		if (powerset != 1) {
 			powerupon = 0;
 		}
 	}
-	if (ballposx >= xs2b1 - xdash && ballposx < xs2b4 + 60 - xdash) {
+	if (ballposx >= xs2b1 - xdash && ballposx < xs2b4 + barwidth - xdash) {
 		if (powerset != 2) {
 			powerupon = 0;
 		}
 	}
-	
-	if (ballposx >= xs3b1 - xdash && ballposx < xs3b4 +60 - xdash) {
+
+	if (ballposx >= xs3b1 - xdash && ballposx < xs3b4 + barwidth - xdash) {
 		if (powerset != 3) {
 			powerupon = 0;
 		}
@@ -624,8 +620,8 @@ void collisionActions() {
 
 
 
-		if (((ballposx >= xs1b1 - xdash && ballposx <= xs1b1 + 60 - xdash) && (ballposy <= ys1b1h || ballposy >= ys1b1y))) {
-			
+		if (((ballposx >= xs1b1 - xdash && ballposx <= xs1b1 + barwidth - xdash) && (ballposy <= ys1b1h || ballposy >= ys1b1y))) {
+
 
 			//cout << "CRASH1" << endl;
 			if (!powerupon) {
@@ -639,30 +635,30 @@ void collisionActions() {
 					score = 0;
 				}
 			}
-			
+
 
 		}
-		else if (ballposx > (xs1b1 + 60 - xdash) && ballposx < (xs1b1 + 60 - xdash) + step) {
+		else if (ballposx > (xs1b1 + barwidth - xdash) && ballposx < (xs1b1 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs1b1 + 60 - xdash << endl;*/
+			cout << xs1b1 + barwidth - xdash << endl;*/
 
 
 
-		
+
 		}
 
-		if (((ballposx >= xs1b2 - xdash && ballposx <= xs1b2 + 60 - xdash) && (ballposy <= ys1b2h || ballposy >= ys1b2y))) {
+		if (((ballposx >= xs1b2 - xdash && ballposx <= xs1b2 + barwidth - xdash) && (ballposy <= ys1b2h || ballposy >= ys1b2y))) {
 
 
-		//	cout << "CRASH1" << endl;
+			//	cout << "CRASH1" << endl;
 			if (!powerupon) {
 				PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 				falld = (ys1b2h + ys1b2y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
@@ -670,27 +666,27 @@ void collisionActions() {
 
 
 		}
-		else if (ballposx > (xs1b2 + 60 - xdash) && ballposx < (xs1b2 + 60 - xdash) + step) {
+		else if (ballposx > (xs1b2 + barwidth - xdash) && ballposx < (xs1b2 + barwidth - xdash) + step) {
 
 			//score++;
 		/*	cout << score << endl;
-			cout << xs1b2 + 60 - xdash << endl;*/
+			cout << xs1b2 + barwidth - xdash << endl;*/
 
-		
+
 		}
 
-		if (((ballposx >= xs1b3 - xdash && ballposx <= xs1b3 + 60 - xdash) && (ballposy <= ys1b3h || ballposy >= ys1b3y))) {
+		if (((ballposx >= xs1b3 - xdash && ballposx <= xs1b3 + barwidth - xdash) && (ballposy <= ys1b3h || ballposy >= ys1b3y))) {
 
 
 
-		//	cout << "CRASH1" << endl;
+			//	cout << "CRASH1" << endl;
 			if (!powerupon) {
 				PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 				falld = (ys1b3h + ys1b3y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
@@ -698,14 +694,14 @@ void collisionActions() {
 
 
 		}
-		else if (ballposx > (xs1b3 + 60 - xdash) && ballposx < (xs1b3 + 60 - xdash) + step) {
+		else if (ballposx > (xs1b3 + barwidth - xdash) && ballposx < (xs1b3 + barwidth - xdash) + step) {
 			//score++;
 			/*cout << score << endl;
-			cout << xs1b3 + 60 - xdash << endl;*/
+			cout << xs1b3 + barwidth - xdash << endl;*/
 
 		}
-		
-		if (((ballposx >= xs1b4 - xdash && ballposx <= xs1b4 + 60 - xdash) && (ballposy <= ys1b4h || ballposy >= ys1b4y))) {
+
+		if (((ballposx >= xs1b4 - xdash && ballposx <= xs1b4 + barwidth - xdash) && (ballposy <= ys1b4h || ballposy >= ys1b4y))) {
 
 
 
@@ -716,7 +712,7 @@ void collisionActions() {
 				falld = (ys1b4h + ys1b4y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
@@ -724,17 +720,17 @@ void collisionActions() {
 
 
 		}
-		else if (ballposx > (xs1b4 + 60 - xdash) && ballposx < (xs1b4 + 60 - xdash) + step) {
+		else if (ballposx > (xs1b4 + barwidth - xdash) && ballposx < (xs1b4 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs1b4 + 60 - xdash << endl;*/
+			cout << xs1b4 + barwidth - xdash << endl;*/
 
 		}
 
 
 
 
-		if (((ballposx >= xs2b1 - xdash && ballposx <= xs2b1 + 60 - xdash) && (ballposy <= ys2b1h || ballposy >= ys2b1y))) {
+		if (((ballposx >= xs2b1 - xdash && ballposx <= xs2b1 + barwidth - xdash) && (ballposy <= ys2b1h || ballposy >= ys2b1y))) {
 
 			//cout << "CRASH2" << endl;
 			if (!powerupon) {
@@ -743,46 +739,46 @@ void collisionActions() {
 				falld = (ys2b1h + ys2b1y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 
 		}
-		else if (ballposx > (xs2b1 + 60 - xdash) && ballposx < (xs2b1 + 60 - xdash) + step) {
+		else if (ballposx > (xs2b1 + barwidth - xdash) && ballposx < (xs2b1 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs2b1 + 60 - xdash << endl;*/
+			cout << xs2b1 + barwidth - xdash << endl;*/
 
 		}
 
-		if (((ballposx >= xs2b2 - xdash && ballposx <= xs2b2 + 60 - xdash) && (ballposy <= ys2b2h || ballposy >= ys2b2y))) {
+		if (((ballposx >= xs2b2 - xdash && ballposx <= xs2b2 + barwidth - xdash) && (ballposy <= ys2b2h || ballposy >= ys2b2y))) {
 
-		//	cout << "CRASH2" << endl;
+			//	cout << "CRASH2" << endl;
 			if (!powerupon) {
 				PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 				falld = (ys2b2h + ys2b2y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 
 		}
-		else if (ballposx > (xs2b2 + 60 - xdash) && ballposx < (xs2b2 + 60 - xdash) + step) {
+		else if (ballposx > (xs2b2 + barwidth - xdash) && ballposx < (xs2b2 + barwidth - xdash) + step) {
 			//score++;
 			/*cout << score << endl;
-			cout << xs2b2 + 60 - xdash << endl;*/
+			cout << xs2b2 + barwidth - xdash << endl;*/
 
 		}
 
-		if (((ballposx >= xs2b3 - xdash && ballposx <= xs2b3 + 60 - xdash) && (ballposy <= ys2b3h || ballposy >= ys2b3y))) {
+		if (((ballposx >= xs2b3 - xdash && ballposx <= xs2b3 + barwidth - xdash) && (ballposy <= ys2b3h || ballposy >= ys2b3y))) {
 
-		//	cout << "CRASH2" << endl;
+			//	cout << "CRASH2" << endl;
 			if (!powerupon) {
 
 				PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -790,133 +786,133 @@ void collisionActions() {
 				falld = (ys2b3h + ys2b3y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 
 		}
-		else if (ballposx > (xs2b3 + 60 - xdash) && ballposx < (xs2b3 + 60 - xdash) + step) {
+		else if (ballposx > (xs2b3 + barwidth - xdash) && ballposx < (xs2b3 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs2b3 + 60 - xdash << endl;*/
+			cout << xs2b3 + barwidth - xdash << endl;*/
 
 		}
 
-		if (((ballposx >= xs2b4 - xdash && ballposx <= xs2b4 + 60 - xdash) && (ballposy <= ys2b4h || ballposy >= ys2b4y))) {
+		if (((ballposx >= xs2b4 - xdash && ballposx <= xs2b4 + barwidth - xdash) && (ballposy <= ys2b4h || ballposy >= ys2b4y))) {
 
-		//	cout << "CRASH2" << endl;
+			//	cout << "CRASH2" << endl;
 			if (!powerupon) {
 				PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 				falld = (ys2b4h + ys2b4y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 
 		}
-		else if (ballposx > (xs2b4 + 60 - xdash) && ballposx < (xs2b4 + 60 - xdash) + step) {
+		else if (ballposx > (xs2b4 + barwidth - xdash) && ballposx < (xs2b4 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs2b4 + 60 - xdash << endl;*/
+			cout << xs2b4 + barwidth - xdash << endl;*/
 
 		}
 
 
 
 
-		if (((ballposx >= xs3b1 - xdash && ballposx <= xs3b1 + 60 - xdash) && (ballposy <= ys3b1h || ballposy >= ys3b1y))) {
+		if (((ballposx >= xs3b1 - xdash && ballposx <= xs3b1 + barwidth - xdash) && (ballposy <= ys3b1h || ballposy >= ys3b1y))) {
 			PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
-		//	cout << "CRASH3" << endl;
+			//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				falld = (ys3b1h + ys3b1y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 		}
-		else if (ballposx > (xs3b1 + 60 - xdash) && ballposx < (xs3b1 + 60 - xdash)+step) {
+		else if (ballposx > (xs3b1 + barwidth - xdash) && ballposx < (xs3b1 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs3b1 + 60 - xdash << endl;*/
+			cout << xs3b1 + barwidth - xdash << endl;*/
 
 		}
 
-		if (((ballposx >= xs3b2 - xdash && ballposx <= xs3b2 + 60 - xdash) && (ballposy <= ys3b2h || ballposy >= ys3b2y))) {
+		if (((ballposx >= xs3b2 - xdash && ballposx <= xs3b2 + barwidth - xdash) && (ballposy <= ys3b2h || ballposy >= ys3b2y))) {
 			PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
-		//	cout << "CRASH3" << endl;
+			//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				falld = (ys3b2h + ys3b2y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 
 		}
-		else if (ballposx > (xs3b2 + 60 - xdash) && ballposx < (xs3b2 + 60 - xdash) + step) {
+		else if (ballposx > (xs3b2 + barwidth - xdash) && ballposx < (xs3b2 + barwidth - xdash) + step) {
 			//score++;
 		/*	cout << score << endl;
-			cout << xs3b2 + 60 - xdash << endl;*/
+			cout << xs3b2 + barwidth - xdash << endl;*/
 
 		}
 
-		if (((ballposx >= xs3b3 - xdash && ballposx <= xs3b3 + 60 - xdash) && (ballposy <= ys3b3h || ballposy >= ys3b3y))) {
+		if (((ballposx >= xs3b3 - xdash && ballposx <= xs3b3 + barwidth - xdash) && (ballposy <= ys3b3h || ballposy >= ys3b3y))) {
 			PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
-		//	cout << "CRASH3" << endl;
+			//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				falld = (ys3b3h + ys3b3y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 		}
-		else if (ballposx > (xs3b3 + 60 - xdash) && ballposx < (xs3b3 + 60 - xdash) + step) {
+		else if (ballposx > (xs3b3 + barwidth - xdash) && ballposx < (xs3b3 + barwidth - xdash) + step) {
 			//score++;
 		/*		cout << score << endl;
-				cout << xs3b3 + 60 - xdash << endl;*/
+				cout << xs3b3 + barwidth - xdash << endl;*/
 
 		}
 
-		if (((ballposx >= xs3b4 - xdash && ballposx <= xs3b4 + 60 - xdash) && (ballposy <= ys3b4h || ballposy >= ys3b4y))) {
+		if (((ballposx >= xs3b4 - xdash && ballposx <= xs3b4 + barwidth - xdash) && (ballposy <= ys3b4h || ballposy >= ys3b4y))) {
 
 			PlaySound(TEXT("audio/solid.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
-		//	cout << "CRASH3" << endl;
+			//	cout << "CRASH3" << endl;
 			if (!powerupon) {
 				falld = (ys3b4h + ys3b4y) / 2 - 225;
 
 				lives--;
-				score--;
+				score = score - 10;
 				if (score <= 0) {
 					score = 0;
 				}
 			}
 		}
-		else if (ballposx > (xs3b4 + 60 - xdash) && ballposx < (xs3b4 + 60 - xdash) + step) {
+		else if (ballposx > (xs3b4 + barwidth - xdash) && ballposx < (xs3b4 + barwidth - xdash) + step) {
 			//score++;
 			/*		cout << score << endl;
-					cout << xs3b3 + 60 - xdash << endl;*/
+					cout << xs3b3 + barwidth - xdash << endl;*/
 
 		}
 
-		
+
 
 	}
 
@@ -937,7 +933,7 @@ void drawBitmapText(string text, float x, float y, float z)
 
 void key(unsigned char k, int x, int y)
 {
-	if (k == 32) jump = 1; if(!gamerun)startgame = 1;
+	if (k == 32) jump = 1; if (!gamerun)startgame = 1;
 	glutPostRedisplay();//redisplay to update the screen with the changed
 
 }
@@ -945,7 +941,7 @@ void key(unsigned char k, int x, int y)
 
 void Timer(int value) {
 
-	if (!gameover) {
+	if (gamerun && !gameover) {
 		score++;
 		timeElapsed += FPS / 1000.0;
 	}
@@ -957,14 +953,14 @@ void drawTimer() {
 	string timeString = "";
 	if (gamerun) {
 
-		
+
 		timeString = "Time : " + to_string(int(timeElapsed)) + " s";
 	}
 	else {
-		 timeString = "Time : 0 s";
+		timeString = "Time : 0 s";
 	}
-		drawBitmapText(timeString, screenwidth - 95, 10, 0);
-	
+	drawBitmapText(timeString, screenwidth - 95, 10, 0);
+
 }
 
 void drawLives() {
@@ -981,13 +977,13 @@ void drawScore() {
 	else {
 		timeString = "0";
 	}
-	drawBitmapText(timeString, screenwidth/2 - 7, screenheight - 30, 0);
+	drawBitmapText(timeString, screenwidth / 2 - 7, screenheight - 30, 0);
 }
 
 void Display() {
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	//drawbackground();
+	drawbackground();
 	if (!gameover) {
 
 		addPowers();
@@ -1016,24 +1012,24 @@ void Display() {
 		if (gamewin) {
 
 			drawBitmapText("You Won!", screenwidth / 2 - 53, 280, 0);
-			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds", screenwidth/ 2 - 158 , 250, 0);
-			drawBitmapText("with a score of "+ patch::to_string(int(score)) +".", screenwidth / 2 - 83 , 220, 0);
+			drawBitmapText("You managed to escape in " + patch::to_string(int(timeElapsed)) + " seconds", screenwidth / 2 - 160, 250, 0);
+			drawBitmapText("with a score of " + patch::to_string(int(score)) + ".", screenwidth / 2 - 95, 220, 0);
 
 			if (!playedsound2) {
-			
+
 				PlaySound(TEXT("audio/win.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 				playedsound2 = 1;
 			}
 
-//			drawBitmapText("Press R to restart", 385, 230, 0);
+			//			drawBitmapText("Press R to restart", 385, 230, 0);
 		}
 		else {
 			for (int i = 0; i < 300000000;i++);
 
 
 			string timeString = "Game Over :(";
-			drawBitmapText(timeString, screenwidth / 2 - 50, screenheight / 2 - 7, 0);
-			drawBitmapText("Your score is " + patch::to_string(int(score)), screenwidth / 2 - 60, screenheight / 2 - 37, 0);
+			drawBitmapText(timeString, screenwidth / 2 - 60, screenheight / 2 - 7, 0);
+			drawBitmapText("Your score is " + patch::to_string(int(score)), screenwidth / 2 - 75, screenheight / 2 - 37, 0);
 		}
 
 	}
@@ -1071,10 +1067,10 @@ void main(int argc, char** argr) {
 	glutTimerFunc(0, Timer, 0);
 	glutKeyboardFunc(key);			//call the keyboard function
 	glutIdleFunc(Anim);
-	//glEnable(GL_TEXTURE_2D);
 
-	//loadBMP(&texID, "Textures/brickwall2.bmp", true);
+	
 
+	loadBMP(&texID, "Textures/brickwall2.bmp", false);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	gluOrtho2D(0.0, screenwidth, 0.0, screenheight);

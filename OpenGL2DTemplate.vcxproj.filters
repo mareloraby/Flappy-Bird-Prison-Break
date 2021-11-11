@@ -21,5 +21,11 @@
     <ClCompile Include="Flappy-Bird.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mariam Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceLab5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
