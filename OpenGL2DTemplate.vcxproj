@@ -83,8 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Flappy-Bird.cpp" />
-    <ClCompile Include="Mariam Source.cpp" />
-    <ClCompile Include="SourceLab5.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

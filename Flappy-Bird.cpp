@@ -12,6 +12,7 @@
 #include "TextureBuilder.h"
 #include <glut.h>
 
+
 using namespace std;
 // A good hackaround found here for to_string problems with GCC
 // http://stackoverflow.com/questions/12975341/to-string-is-not-a-member-of-std-says-so-g
